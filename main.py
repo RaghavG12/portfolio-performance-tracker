@@ -49,20 +49,18 @@ portfolio_growth = weighted.sum(axis=1)
 portfolio_value = portfolio_growth * initial_investment
 
 # Show the first few rows of the portfolio's value because otherwise too many rows
-print("Portfolio value over time:")
+#print("Portfolio value over time:")
 # print(portfolio_value.head()) 
 
 # since too many rows to just print the entire portfolio_value table - need to graph growth
 
-# Step 3: Plot the portfolio value over time
-plt.figure(figsize=(10, 6))  # Set the size of the plot
-portfolio_value.plot(title="Portfolio Value Over Time", linewidth=2)
+ # set size of the plot - width 10 inches, hieght 6 inches
+plt.figure(figsize=(10, 6)) 
+portfolio_value.plot(title="Portfolio Value Over Time")
 
-# Add labels and grid
 plt.xlabel("Date")
 plt.ylabel("Portfolio Value ($)")
+# this adds gridlines so chart is easier to see
 plt.grid(True)
 
-# Show the plot
-plt.tight_layout()
 plt.show()
