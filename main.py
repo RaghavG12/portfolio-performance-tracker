@@ -1,20 +1,42 @@
 import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
+import argparse
 
-# Step 1: Define portfolio settings
+def get_args():
+    # creating an Argument Parser object called 'parser' from argparse library
+    parser = argparse.ArgumentParser()
+
+    # nargs just means to allow one or more values 
+    # "--tickers" "--weights" etc are the required arguments
+    parser.add_argument("--tickers", nargs="+", required=True)
+    parser.add_argument("--weights", nargs="+", type=float, required=True)
+    parser.add_argument("--start", required=True)
+    parser.add_argument("--end", required=True)
+    parser.add_argument("--amount", type=float, required=True)
+
+    return parser.parse_args()
+
+args = get_args()
+
+# Validate that weights sum to 1.0
+if not abs(sum(args.weights) - 1.0) == 0:
+    # f-string to evaluate variables inside {}
+    # :.4f to tell python to evaluate to 4 decimal place float 
+    raise ValueError(f"Sum of weights must be 1.0. You provided: {sum(args.weights):.4f}")
+
+
 # tickers string array with different aussie etfs listed on asx
-tickers = ["VAS.AX", "VGS.AX", "BOND.AX"]  
+tickers = args.tickers
  # sample portfolio allocation
-weights = [0.4, 0.4, 0.2]       
+weights = args.weights
 # setting variable to show we start with $10,000          
-initial_investment = 10000                
+initial_investment = args.amount                
 
-# Define the date range for historical data
-start_date = "2020-01-01"
-end_date = "2024-12-31"
+# define date range for historical data
+start_date = args.start
+end_date = args.end
 
-# Step 2: Download daily adjusted close prices
 # yf.download tells program to fetch historical stock/etf price data from yahoo finance
 # yf.download returns a DataFrame which is its own type - where each row is a date
 price_data = yf.download(tickers, start=start_date, end=end_date, auto_adjust=True)
@@ -24,7 +46,7 @@ price_data = yf.download(tickers, start=start_date, end=end_date, auto_adjust=Tr
 # testing: show first few rows to check data frame is correct and working
 #print(price_data.head())
 
-# Monitoring only overall portfolio performance so we only care about closing prices
+# monitoring only overall portfolio performance so we only care about closing prices
 # closing_prices is name of a type DataFrame - where the only column is the closing column 
 closing_prices = price_data["Close"]
 
