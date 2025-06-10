@@ -19,23 +19,21 @@ def get_args():
 
 args = get_args()
 
-# Validate that weights sum to 1.0
+tickers = args.tickers
+weights = args.weights
+initial_investment = args.amount                
+start_date = args.start
+end_date = args.end
+
+
+# error checking
+if len(tickers) != len(weights):
+    raise ValueError("The number of tickers must match the number of weights.")
 if not abs(sum(args.weights) - 1.0) == 0:
     # f-string to evaluate variables inside {}
     # :.4f to tell python to evaluate to 4 decimal place float 
     raise ValueError(f"Sum of weights must be 1.0. You provided: {sum(args.weights):.4f}")
 
-
-# tickers string array with different aussie etfs listed on asx
-tickers = args.tickers
- # sample portfolio allocation
-weights = args.weights
-# setting variable to show we start with $10,000          
-initial_investment = args.amount                
-
-# define date range for historical data
-start_date = args.start
-end_date = args.end
 
 # yf.download tells program to fetch historical stock/etf price data from yahoo finance
 # yf.download returns a DataFrame which is its own type - where each row is a date
@@ -54,25 +52,23 @@ closing_prices = price_data["Close"]
 # normalised is also a dataframe type with 3 columns - standardised prices for each etf in portfolio
 # iloc[0] means integer location 0th index. So this gives normalised = 1 for the first row
 normalised = closing_prices / closing_prices.iloc[0]
-#print(normalised.head())
 
 # same thing as normalised tables - except weighted according to scale of contribution to initial $10k
 weighted = normalised * weights
-
-#print(weighted.head())
 
 # Sum across columns to get total portfolio value over time
 # note that if we had axis = 1, we would be summing down the columns, not rows
 portfolio_growth = weighted.sum(axis=1)
 
-#print(portfolio_growth.head())
-
 # multiplying by initial investment
 portfolio_value = portfolio_growth * initial_investment
 
-# Show the first few rows of the portfolio's value because otherwise too many rows
-#print("Portfolio value over time:")
-# print(portfolio_value.head()) 
+
+
+
+
+
+
 
 # since too many rows to just print the entire portfolio_value table - need to graph growth
 
