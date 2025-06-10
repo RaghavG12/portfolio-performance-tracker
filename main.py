@@ -77,7 +77,7 @@ plt.figure(figsize=(10, 6))
 portfolio_value.plot(title="Portfolio Value Over Time")
 
 plt.xlabel("Date")
-plt.ylabel("Portfolio Value ($)")
+plt.ylabel("Portfolio Value")
 # this adds gridlines so chart is easier to see
 plt.grid(True)
 

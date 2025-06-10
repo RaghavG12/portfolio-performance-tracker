@@ -27,5 +27,5 @@ This is a Python project that tracks and visualises the performance of a simulat
    source venv/bin/activate
 3. Install dependencies:
    pip install pandas matplotlib yfinance
-4. Run the script:
-   python3 main.py
+4. Run the script (can change what products/weights/time period/initial investment):
+   python3 main.py --tickers VAS.AX VGS.AX BOND.AX --weights 0.4 0.4 0.2 --start 2020-01-01 --end 2024-12-31 --amount 10000
